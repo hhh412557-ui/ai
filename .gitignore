@@ -1,0 +1,53 @@
+# ============================================
+# Obsidian Vault + Horizon 项目 .gitignore
+# ============================================
+
+# Obsidian
+.obsidian/workspace*.json
+.obsidian/workspace.json
+.obsidian/cache
+.obsidian/hotkeys.json
+.trash/
+
+# Horizon - Python
+Horizon/__pycache__/
+Horizon/*.py[cod]
+Horizon/*$py.class
+Horizon/.Python
+Horizon/build/
+Horizon/develop-eggs/
+Horizon/dist/
+Horizon/eggs/
+Horizon/*.egg-info/
+Horizon/.venv
+Horizon/venv/
+Horizon/.uv/
+
+# Horizon - 敏感数据
+Horizon/.env
+Horizon/data/config.json
+Horizon/data/seen.json
+Horizon/data/subscribers.json
+Horizon/data/mcp.secrets.json
+Horizon/data/mcp-secrets.json
+Horizon/data/mcp-runs/
+
+# Horizon - 日志与缓存
+Horizon/logs/
+Horizon/*.log
+Horizon/.ruff_cache
+Horizon/.pytest_cache
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+
+# Claude
+.claude/
+.claudian/

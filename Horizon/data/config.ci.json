@@ -1,0 +1,198 @@
+{
+  "version": "1.0",
+  "_comment": "CI 专用配置 - 提交到 Git 用于 GitHub Actions 自动运行。密钥通过 GitHub Secrets 注入。",
+
+  "ai": {
+    "provider": "deepseek",
+    "model": "deepseek-chat",
+    "base_url": "https://api.deepseek.com",
+    "api_key_env": "DEEPSEEK_API_KEY",
+    "temperature": 0.3,
+    "max_tokens": 8192,
+    "throttle_sec": 1,
+    "languages": ["zh", "en"],
+    "analysis_concurrency": 3,
+    "enrichment_concurrency": 3
+  },
+
+  "sources": {
+    "hackernews": {
+      "enabled": true,
+      "fetch_top_stories": 30,
+      "min_score": 100
+    },
+
+    "rss": [
+      {
+        "name": "Simon Willison",
+        "url": "https://simonwillison.net/atom/everything/",
+        "enabled": true,
+        "category": "ai-tools"
+      },
+      {
+        "name": "GitHub Trending - Daily",
+        "url": "https://mshibanami.github.io/GitHubTrendingRSS/daily/all.xml",
+        "enabled": true,
+        "category": "github-trending"
+      },
+      {
+        "name": "Semianalysis",
+        "url": "https://newsletter.semianalysis.com/feed",
+        "enabled": true,
+        "category": "semiconductors"
+      },
+      {
+        "name": "量子位",
+        "url": "https://wechat2rss.xlab.app/feed/7131b577c61365cb47e81000738c10d872685908.xml",
+        "enabled": true,
+        "category": "ai-news"
+      },
+      {
+        "name": "新智元",
+        "url": "https://wechat2rss.xlab.app/feed/ede30346413ea70dbef5d485ea5cbb95cca446e7.xml",
+        "enabled": true,
+        "category": "ai-news"
+      },
+      {
+        "name": "机器之心",
+        "url": "https://wechat2rss.xlab.app/feed/9b7e27a24c06bb7c4be7ae87a6fd1322a4f38b08.xml",
+        "enabled": true,
+        "category": "ai-news"
+      },
+      {
+        "name": "宝玉的AI探索",
+        "url": "https://rsshub-github-pages.baoyu.io/wechat/mp/profile/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoi56iL5bqP546L5Zem5p2l5ZCOLeWuneedgCIsImZha2VpZCI6Ik1f0JHQvtC90YMiLCJmcmVlIjp0cnVlfQ.C6MMLhQHKSZUlfTfWMdcfsaKZm-QN12yDufCb-_hR_s",
+        "enabled": true,
+        "category": "ai-insights"
+      }
+    ],
+
+    "reddit": {
+      "enabled": true,
+      "subreddits": [
+        {
+          "subreddit": "MachineLearning",
+          "enabled": true,
+          "sort": "hot",
+          "time_filter": "day",
+          "fetch_limit": 10,
+          "min_score": 50
+        },
+        {
+          "subreddit": "LocalLLaMA",
+          "enabled": true,
+          "sort": "hot",
+          "time_filter": "day",
+          "fetch_limit": 10,
+          "min_score": 30
+        },
+        {
+          "subreddit": "OpenAI",
+          "enabled": true,
+          "sort": "hot",
+          "time_filter": "day",
+          "fetch_limit": 10,
+          "min_score": 30
+        },
+        {
+          "subreddit": "ClaudeAI",
+          "enabled": true,
+          "sort": "hot",
+          "time_filter": "day",
+          "fetch_limit": 10,
+          "min_score": 20
+        }
+      ],
+      "users": [],
+      "fetch_comments": 8
+    },
+
+    "github": [
+      {
+        "type": "user_events",
+        "username": "karpathy",
+        "enabled": true
+      },
+      {
+        "type": "repo_releases",
+        "owner": "vllm-project",
+        "repo": "vllm",
+        "enabled": true
+      },
+      {
+        "type": "repo_releases",
+        "owner": "sgl-project",
+        "repo": "sglang",
+        "enabled": true
+      },
+      {
+        "type": "repo_releases",
+        "owner": "triton-lang",
+        "repo": "triton",
+        "enabled": true
+      },
+      {
+        "type": "repo_releases",
+        "owner": "AUTOMATIC1111",
+        "repo": "stable-diffusion-webui",
+        "enabled": true
+      },
+      {
+        "type": "repo_releases",
+        "owner": "Comfy-Org",
+        "repo": "ComfyUI",
+        "enabled": true
+      },
+      {
+        "type": "repo_releases",
+        "owner": "langgenius",
+        "repo": "dify",
+        "enabled": true
+      }
+    ],
+
+    "ossinsight": {
+      "enabled": true,
+      "period": "past_24_hours",
+      "languages": ["All", "Python", "TypeScript"],
+      "keywords": ["ai", "llm", "machine-learning", "deep-learning"],
+      "min_stars": 20,
+      "max_items": 20,
+      "category": "ai-trending"
+    },
+
+    "twitter": {
+      "enabled": false
+    },
+
+    "telegram": {
+      "enabled": false
+    }
+  },
+
+  "filtering": {
+    "ai_score_threshold": 7.0,
+    "time_window_hours": 24,
+    "max_items": 25,
+    "category_groups": {
+      "ai": {
+        "limit": 12,
+        "categories": ["ai-news", "ai-tools", "ai-insights", "ai-trending", "machine-learning"]
+      },
+      "github-trending": {
+        "limit": 5,
+        "categories": ["github-trending"]
+      }
+    },
+    "default_group": "other",
+    "default_group_limit": 5
+  },
+
+  "webhook": {
+    "enabled": false
+  },
+
+  "email": {
+    "enabled": false
+  }
+}

@@ -1,0 +1,58 @@
+name: Daily AI News Summary
+
+on:
+  schedule:
+    # UTC 00:17 = 北京时间 08:17 (避开整点高峰)
+    - cron: '17 0 * * *'
+  workflow_dispatch:      # 允许手动触发
+  push:
+    branches: [main]
+    paths:
+      - 'Horizon/data/config.ci.json'  # 配置变更时自动测试
+
+jobs:
+  daily-summary:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Install Horizon dependencies
+        working-directory: Horizon
+        run: uv sync
+
+      - name: Prepare CI config
+        working-directory: Horizon
+        run: cp data/config.ci.json data/config.json
+
+      - name: Run Horizon
+        working-directory: Horizon
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HORIZON_WEBHOOK_URL: ${{ secrets.HORIZON_WEBHOOK_URL }}
+        run: uv run horizon --hours 24
+
+      - name: Get date
+        run: echo "DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./Horizon/docs
+          keep_files: true
+          commit_message: "📝 Daily AI Summary: ${{ env.DATE }}"
+          publish_branch: gh-pages
+          enable_jekyll: true
