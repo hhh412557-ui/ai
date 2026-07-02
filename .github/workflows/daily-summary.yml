@@ -5,10 +5,6 @@ on:
     # UTC 00:17 = 北京时间 08:17 (避开整点高峰)
     - cron: '17 0 * * *'
   workflow_dispatch:      # 允许手动触发
-  push:
-    branches: [main]
-    paths:
-      - 'Horizon/data/config.ci.json'  # 配置变更时自动测试
 
 jobs:
   daily-summary:
@@ -41,8 +37,33 @@ jobs:
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          HORIZON_WEBHOOK_URL: ${{ secrets.HORIZON_WEBHOOK_URL }}
         run: uv run horizon --hours 24
+
+      - name: Archive to AI日报 folder
+        run: |
+          # Clean Jekyll frontmatter for Obsidian compatibility
+          for f in Horizon/docs/_posts/*-summary-zh.md; do
+            [ -f "$f" ] || continue
+            basename=$(basename "$f")
+            # Remove Jekyll layout line, keep the rest
+            sed '/^layout:/d' "$f" > "AI日报/$basename"
+            echo "Archived: AI日报/$basename"
+          done
+          # Also archive English version
+          for f in Horizon/docs/_posts/*-summary-en.md; do
+            [ -f "$f" ] || continue
+            basename=$(basename "$f")
+            sed '/^layout:/d' "$f" > "AI日报/$basename"
+            echo "Archived: AI日报/$basename"
+          done
+
+      - name: Commit AI日报 to main branch
+        run: |
+          git config user.name "Horizon AI Bot"
+          git config user.email "bot@horizon.ai"
+          git add AI日报/
+          git diff --staged --quiet || git commit -m "📝 AI日报 $(date +'%Y-%m-%d')"
+          git push origin main
 
       - name: Get date
         run: echo "DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV

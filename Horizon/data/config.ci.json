@@ -39,7 +39,7 @@
         "name": "Semianalysis",
         "url": "https://newsletter.semianalysis.com/feed",
         "enabled": true,
-        "category": "semiconductors"
+        "category": "ai-hardware"
       },
       {
         "name": "量子位",
@@ -171,13 +171,13 @@
   },
 
   "filtering": {
-    "ai_score_threshold": 7.0,
+    "ai_score_threshold": 8.0,
     "time_window_hours": 24,
-    "max_items": 25,
+    "max_items": 20,
     "category_groups": {
       "ai": {
-        "limit": 12,
-        "categories": ["ai-news", "ai-tools", "ai-insights", "ai-trending", "machine-learning"]
+        "limit": 15,
+        "categories": ["ai-news", "ai-tools", "ai-insights", "ai-trending", "machine-learning", "ai-hardware", "semiconductors"]
       },
       "github-trending": {
         "limit": 5,
@@ -185,7 +185,7 @@
       }
     },
     "default_group": "other",
-    "default_group_limit": 5
+    "default_group_limit": 3
   },
 
   "webhook": {
