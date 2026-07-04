@@ -177,7 +177,7 @@
         "sama"
       ],
       "fetch_limit": 10,
-      "cookie_dir": "Horizon/data",
+      "cookie_dir": "data",
       "cookie_file_pattern": "x_cookies.json"
     },
 
