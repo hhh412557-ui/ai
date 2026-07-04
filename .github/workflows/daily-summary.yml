@@ -26,11 +26,27 @@ jobs:
 
       - name: Install Horizon dependencies
         working-directory: Horizon
-        run: uv sync
+        run: uv sync --extra twitter
+
+      - name: Install Playwright Chromium
+        working-directory: Horizon
+        run: uv run playwright install chromium --with-deps
 
       - name: Prepare CI config
         working-directory: Horizon
         run: cp data/config.ci.json data/config.json
+
+      - name: Restore Twitter Cookies
+        working-directory: Horizon
+        env:
+          TWITTER_COOKIES: ${{ secrets.TWITTER_COOKIES }}
+        run: |
+          if [ -n "$TWITTER_COOKIES" ]; then
+            echo "$TWITTER_COOKIES" > data/x_cookies.json
+            echo "Twitter cookies restored."
+          else
+            echo "No TWITTER_COOKIES secret set, Twitter will be skipped."
+          fi
 
       - name: Run Horizon
         working-directory: Horizon
@@ -45,7 +61,6 @@ jobs:
           for f in Horizon/docs/_posts/*-summary-zh.md; do
             [ -f "$f" ] || continue
             basename=$(basename "$f")
-            # Remove Jekyll layout line, keep the rest
             sed '/^layout:/d' "$f" > "AI日报/$basename"
             echo "Archived: AI日报/$basename"
           done

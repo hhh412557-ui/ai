@@ -162,7 +162,23 @@
     },
 
     "twitter": {
-      "enabled": false
+      "enabled": true,
+      "mode": "playwright",
+      "users": [
+        "karpathy",
+        "ylecun",
+        "AndrewYNg",
+        "AnthropicAI",
+        "OpenAI",
+        "GoogleDeepMind",
+        "huggingface",
+        "LangChainAI",
+        "_akhaliq",
+        "sama"
+      ],
+      "fetch_limit": 10,
+      "cookie_dir": "Horizon/data",
+      "cookie_file_pattern": "x_cookies.json"
     },
 
     "telegram": {
